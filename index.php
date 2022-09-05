@@ -23,7 +23,7 @@ case "urlactivation":
    urlactivation();
   break;
 case "dashboard":
-   dashboard($_SESSION['fname'], $_SESSION['fname']);
+   dashboard());
   break;
 default:
  homepage();
