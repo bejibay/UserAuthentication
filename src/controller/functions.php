@@ -6,8 +6,8 @@
    $passwordError ="";
    include WORKING_DIRECTORY_PATH."/src/views/signin.php";
 if(isset($_POST['signin'])){
-   $user  = new User();
-   $user->verifyEmail($_POST['email']);
+   $user  = new User($_POST);
+   $user->verifyEmail();
    if(!$emailResult) {$emailError = "Email Does not Exist"; return  $emailError;}
    $user->verifypassword();
    if(!$pswResult) {$passwordError = "Incorret password"; return $passwordError; }
@@ -27,13 +27,12 @@ function logout(){
 function signup(){
 
 if(isset($_POST['signup'])){
-   $mailError = "";
+   $emailError = "";
    $signupError ="";
 include WORKING_DIRECTORY_PATH."/src/views/signup.php"; 
-$user =  new User();
+$user =  new User($_POST);
 $user->verifyemail();
 if(!$resultEmail){$emailError ="Email does not exist";return $emailError;}
-$user->__construct($_POST);
 $user->connect();
 $user->insert();
 if($successinsert){sendemail();}
@@ -42,9 +41,9 @@ if(!$successinsert){$signupError = "account not created try again"; return;}
 
 }
 
-function dashboard($lname,$fname){
+function dashboard(){
 
-   if(isset($fname) && isset($lname)){$lname = $_SESSION['lname']; $fname= $_SESSION['fname'];
+   if(isset($_SESSION['lname']) && isset($_SESSION['lname'])){
    include WORKING_DIRECTORY_PATH."/src/views/dashboard.php";
    }
 }
@@ -70,10 +69,10 @@ return $EmailSuccess;
 
 
 function urlactivation(){
-   
-
-$user = new User();
-$user->activateaccount($_GET['activationurl']);
+   if(isset($activationurl)){
+   $activationurl = $_GET['activationurl'];
+$user = new User($_POST);
+$user->activateaccount();
 if(count($result)>0){$acctivationSuccess = "<p>Your account is now activated login in below</p>"
    ."<p><a href='/views/login'>click to login</a>";
 
@@ -83,5 +82,6 @@ else{$activationError = "<p>account does not exist try to register below</p>".
    
 }
 include WORKING_DIRECTORY_PATH."/src/views/activationurl.php";
+}
 }
 ?>
