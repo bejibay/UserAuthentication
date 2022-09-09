@@ -56,13 +56,13 @@ function sendemail(){
 //generate activation URL
 //send activation email
 $EmailSuccess = 0;
-$statuschangeurl =md5(rand(0,999).time());
+$changeurl =md5(rand(0,999).time());
 if(isset($register)){
 $register = $_POST['register'];
 $to = $_POST['email'];
 $subject = " Activate your account";
 $msg = 'Click on email below to activate <br>
-<a href="/activation.php?statuschangeurl='.$statuschangeurl.'">
+<a href="/activation.php?changeurl='.$changeurl.'">
 Click to activate</a >';
 $headers = "From:bejibay@gmail.com";
 if(mail($to,$subject,$msg,$headers)) $EmailSuccess = " check your email to activate your account";}
@@ -71,7 +71,7 @@ $requestpasswordreset = $_POST['requestpasswordreset'] ;
 $to = $_POST['email'];
 $subject = " Reset your password";
 $msg = 'Click on email below to reset password <br>
-<a href="/resturl.php?statuschangeurl='.$statuschangeurl.'">
+<a href="/resturl.php?changeurl='.$changeurl.'">
 Click to reset</a >';
 $headers = "From:bejibay@gmail.com";
 if(mail($to,$subject,$msg,$headers)) $EmailSuccess = " check your email to reset your account";}
@@ -94,8 +94,8 @@ function requestpasswordreset(){
 function urlactivation(){
    include WORKING_DIRECTORY_PATH."/src/views/activationurl.php";
    $activationResult = 0;
-   if(isset($statuschangeurl)){
-   $statuschangeurl = $_GET['statuschangeurl'];
+   if(isset($changeurl)){
+   $changeurl = $_GET['changeurl'];
 $user = new User($_POST);
 $user->activateaccount();
 if(count($result)>0){$activationResult = "<p>Your account is now activated login in below</p>"
@@ -113,8 +113,8 @@ return $activationResult;
 function passwordreset(){
    include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
    $resetResult = 0;
-   if(isset($_GET['statuschangeurl'])){
-  $statuschangeurl =$_GET['statuschangeurl'];
+   if(isset($_GET['changeurl'])){
+  $changeurl =$_GET['changeurl'];
   if(isset($_POST['resetpassword]')){
    $user =new User($_POST);
    $user->verifyemail();

@@ -78,8 +78,8 @@ if(count($emailResult)>0){
   
    function insert(){
   $conn= $this->connect();
-  $sql = 'INSERT INTO user (firstname, lastname, status, activationurl, email, password, created) VALUES
-  (:firstname,:lastname, :password, :created, :email,:status, :created, :activationurl)';
+  $sql = 'INSERT INTO user (firstname, lastname, status, changeurl, email, password, created) VALUES
+  (:firstname,:lastname, :password, :created, :email,:status, :created, :changeurl)';
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':firstname', $this->firstname. PDO::PARAM_STR);
    $stmt->bindValue(':lasttname', $this->lasttname. PDO::PARAM_STR);
@@ -87,7 +87,7 @@ if(count($emailResult)>0){
    $stmt->bindValue(':pasword', $this->pattword. PDO::PARAM_STR);
    $stmt->bindValue(':created', $this->created. PDO::PARAM_INT);
    $stmt->bindValue(':status', $this->status. PDO::PARAM_INT);
-   $stmt->bindValue(':activationurl', $this->activationurl. PDO::PARAM_STR);
+   $stmt->bindValue(':changeurl', $this->changeurl. PDO::PARAM_STR);
   $stmt->execute();
    $successInsert= $conn->LastInsertId();
   if($successInsert)return $successInsert;
@@ -111,10 +111,10 @@ if(count($emailResult)>0){
     $activatestatuss = 0;
   $conn = $this->connect();
   $status = 1;
-  $sql =  'UPDATE table SET status  =:status WHERE activationurl = :activationurl limit 0,1';
+  $sql =  'UPDATE table SET status  =:status WHERE changeurl = :changeurl limit 0,1';
   $stmt = $conn->prepare($sql);
   $stmt-bindValue(':status', $status, PDO::PARAM_INT);
-  $stmt-bindValue(':activationurl', $activationurl, PDO::PARAM_STR);
+  $stmt-bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
   $stmt->execute();
   $result = $stmt->rowCount();
   return $result;
