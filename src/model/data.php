@@ -23,7 +23,7 @@ public function __construct($data = array()){
   if(isset(data['id'])&& is_int(data['id']))$this->id = testdata($data['id']);
   if(isset(data['firstname'])) $this->firstname = testdata($data['firstnsame']);
   if(isset(data['lastname'])) $this->lastname = testdata($data['lastname']);
-  if(isset(data['email']) && filter_var($data['lastname'],FILTER_VALIDATE_EMAIL)) $this->email = testdata($data['lastname']);
+  if(isset(data['email']) && filter_var($data['lastname'],FIfLTER_VALIDATE_EMAIL)) $this->email = testdata($data['lastname']);
 //set password pattern
 $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?])
 [0-9A-Za-z@#\-_$%^&+=§!\?]{8}$/";
@@ -68,9 +68,10 @@ if(count($emailResult)>0){
   $stmt->bindValue(':password',$password, PDO::PARAM_STR);
   $tmt->execute();
   $pswResult = $stmt->fetch(PDO::FETCH_ASSOC);
-  return $pwResult;
+  if($pswResult) return $pwResult;
+  else{return false;}
  }
- return false;
+ 
 }
 }
 
@@ -88,34 +89,53 @@ if(count($emailResult)>0){
    $stmt->bindValue(':status', $this->status. PDO::PARAM_INT);
    $stmt->bindValue(':activationurl', $this->activationurl. PDO::PARAM_STR);
   $stmt->execute();
-  if($successInsert= $conn->LastInsertId()) {return $successInsert;}
-  return false;
+   $successInsert= $conn->LastInsertId();
+  if($successInsert)return $successInsert;
+  else{return false;}
   }
   
    function updatepassword(){
- $conn = $this->connect();
+    $pswupdate = 0;
+  $conn = $this->connect();
   $sql = 'UPDATE table SET password = :password  WHERE email = :email';
   $stmt = $conn->prepare($sql);
   $stmt-bindValue(':email', $this->email, PDO::PARAM_STR);
   $stmt-bindValue(':password', $this->password, PDO::PARAM_STR);
   $stmt->execute();
   $result = $stmt->rowCount();
-  if($result>0) {$pswupdate =  "password successfully updated"; return $pswupdate;}
-  else{$pswupdate = "Password could not update"; return $pswupdate;} 
-  }
+  if($result)return $result;
+  else{return false;}
+}
   
    function activateaccount(){
+    $activatestatuss = 0;
   $conn = $this->connect();
   $status = 1;
   $sql =  'UPDATE table SET status  =:status WHERE activationurl = :activationurl limit 0,1';
   $stmt = $conn->prepare($sql);
   $stmt-bindValue(':status', $status, PDO::PARAM_INT);
-  $stmt-bindValue(':actionurl', $actionurl, PDO::PARAM_STR);
+  $stmt-bindValue(':activationurl', $activationurl, PDO::PARAM_STR);
   $stmt->execute();
   $result = $stmt->rowCount();
-  if($result>0){$activatestatuss = "Account status activated "; return $activatestatus;}
-  else{$activatestatus = "Account status not activated "; return $activatestatus; }
-  }
+  return $result;
+  if(!$result) return false;
+
+   }
+
+   function resetaccountstatus(){
+    $accountsatuss = 0;
+  $conn = $this->connect();
+  $status = 1;
+  $sql =  'UPDATE table SET status  =:status WHERE statuschangeurl = :statuschangeurl limit 0,1';
+  $stmt = $conn->prepare($sql);
+  $stmt-bindValue(':status', $status, PDO::PARAM_INT);
+  $stmt-bindValue(':statuschangeurl', $statuschangeurl, PDO::PARAM_STR);
+  $stmt->execute();
+  $result = $stmt->rowCount();
+  return $result;
+  if(!$result) return false;
+
+   }
 
   }
   
