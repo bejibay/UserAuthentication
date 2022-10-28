@@ -23,7 +23,7 @@ case "urlactivation":
    urlactivation();
   break;
 case "dashboard":
-   dashboard());
+   dashboard();
   break;
 default:
  homepage();

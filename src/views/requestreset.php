@@ -17,7 +17,7 @@
 <h2>Request Password Reset</h2>
 <h3><?php echo $emailSuccess;?></h3>
 <form>
-<input type = "text" name ="requestpasswordreset"  value ="Request Password Reset> 
+<input type = "text" name ="requestpasswordreset"  value ="Request Password Reset"> 
 </form>
 </div>
 </div>
