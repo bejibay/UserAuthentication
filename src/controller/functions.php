@@ -1,106 +1,120 @@
 
 <?php
 
- function signin(){
-   $emailError = "";
-   $passwordError ="";
-   include WORKING_DIRECTORY_PATH."/src/views/signin.php";
+function signin(){
+$emailError = "";
+$passwordError ="";
+$newdata =array();
+if(isset($_POST['email']) && isset($_POST['pasword'])){
+$userlogin= ["email"=>$_POST['email'],"password"=>$_POST['password']]; 
+}
 if(isset($_POST['signin'])){
-   $user  = new User($_POST);
-   $user->verifyEmail();
-   if(!$emailResult) {$emailError = "Email Does not Exist"; return  $emailError;}
-   $user->verifypassword();
-   if(!$pswResult) {$passwordError = "Incorret password"; return $passwordError; }
-   if($pswResult) {$_SESSION['lname'] = $pswResult['firstname'];  $_SESSION['fname'] = $pswResult['lastname']; 
-    header("location:/views/dashboard");}}
-if(isset($_POST['cancel'])) {include WORKING_DIRECTORY_PATH."/src/views/signin.php";}
- }
+$user  = new User($newdata);
+$result1 = $user->verifyEmail();
+if(!$result1) $emailError = "email does not exist"; return;
+$result2 = $user->verifyPassword();
+if(!$result2) $paswordError ="incorrect password"; return;
+if(isset($result1) && $result2 ===true){
+$_SESSION['firstname'] = $result['firstname'];
+$_SESION['lastname']   = $result['lastname'];
+header("location:dashboard");
+}
+include WORKING_DIRECTORY_PATH."/src/views/login.php";
+}
+}
 
 
 function logout(){
-    unset($_SESSION);
-    session_destroy();
-      header("Location:/src/views/homepage.php");
-    }  
+unset($_SESSION);
+session_destroy();
+header("location:/UserAuthentication");
+}  
 
 
 function signup(){
-   include WORKING_DIRECTORY_PATH."/src/views/signup.php"; 
-if(isset($_POST['signup'])){
-   $emailError = "";
-   $signupError ="";
-$user =  new User($_POST);
-$user->verifyemail();
-if(!$resultEmail){$emailError ="Email does not exist";return $emailError;}
-$user->connect();
-$user->insert();
-if($successinsert){sendemail();}
-if(!$successinsert){$signupError = "account not created try again"; return $signupError;}
+$emailError = "";
+$signupError ="";
+$emailSuccess ="";
+$newdata =array();
+$changeurl =md5(rand(0,999).time());
+if(isset($_POST['email']) && isset($_POST['password'])){
+$newdata= ["email"=>$_POST['email'],"password"=>$_POST['password'],"confirmpasword"=>$_POST['confirmpassword']]; 
 }
-
+if(isset($_POST['signup'])){
+if($_POST['password'] == $_POST['confirmpassword']){
+$user =  new User($newdata);
+$user->connect();
+$result1 = $user->verifyemail();
+if($result1)$result2 = $user->insert($changeurl);
+ else{$emailError ="incorrect emsail";}
+if($result2){sendemailone($changeurl); $emailSuccess ="Check your email to activate your account";}
+  else{$signupError = 'error in signup';}
+}
+else{$signupError= "password does not match";}
+}
+include WORKING_DIRECTORY_PATH."/src/views/register.php";
 }
 
 function dashboard(){
 
-   if(isset($_SESSION['lname']) && isset($_SESSION['lname'])){
-   include WORKING_DIRECTORY_PATH."/src/views/dashboard.php";
-   }
+if(!isset($_SESSION['firstname']) && !isset($_SESSION['lname'])){
+ header("location:logib");
+}
+else{include WORKING_DIRECTORY_PATH."/src/views/dashboard.php";} 
 }
 
 function homepage(){
-   include WORKING_DIRECTORY_PATH."/src/views/homepage.php";
+include WORKING_DIRECTORY_PATH."/src/views/homepage.php";
 }
    
 
-function sendemail(){
-//generate activation URL
-//send activation email
-$EmailSuccess = "";
-$changeurl =md5(rand(0,999).time());
-if(isset($register)){
-$register = $_POST['register'];
-$to = $_POST['email'];
+function sendemailone($changeurl){
+$url = $changeurl;
+$email = isset($email)?$_POST['email']:"";
+$to = $email;
 $subject = " Activate your account";
 $msg = 'Click on email below to activate <br>
-<a href="/activation.php?changeurl='.$changeurl.'">
+<a href="/activation.php?changeurl='.$url.'">
 Click to activate</a >';
 $headers = "From:bejibay@gmail.com";
-if(mail($to,$subject,$msg,$headers)) {$EmailSuccess = " check your email to activate your account";}
+mail($to,$subject,$msg,$headers);
 }
-elseif(isset($requestpasswordreset)){
-$requestpasswordreset = $_POST['requestpasswordreset'] ;
-$to = $_POST['email'];
+
+function sendemailtwo($changeurl){
+$url = $changeurl;
+$email = isset($email)?$_POST['email']:"";
+$to = $email;
 $subject = " Reset your password";
 $msg = 'Click on email below to reset password <br>
-<a href="/resturl.php?changeurl='.$changeurl.'">
+<a href="/resturl.php?changeurl='.$url.'">
 Click to reset</a >';
 $headers = "From:bejibay@gmail.com";
-if(mail($to,$subject,$msg,$headers)) {$EmailSuccess = " check your email to reset your account";}
-}
-else{$EmailSuccess = false;}  
-return $EmailSuccess;
+mail($to,$subject,$msg,$headers);
 }
 
 
-function requestpasswordreset(){
-   include WORKING_DIRECTORY_PATH."/src/views/requestreset.php";
- if(isset($_POST['requestpasswordreset'])) {
-   $user= new User($_POST);
-   $user->verifyemail();
-   sendemail();
- }  
+
+function requestReset(){
+$changeurl =md5(rand(0,999).time());
+if(isset($_POST['email'])){
+$newdata= ["email"=>$_POST['email']]; 
+}
+if(isset($_POST['requestreset'])) {
+$user= new User($newdata);
+$result = $user->verifyemail();
+if($result)sendemailtwo($changeurl);
+ } 
+ include WORKING_DIRECTORY_PATH."/src/views/requestreset.php"; 
 }
 
 
 function urlactivation(){
-   include WORKING_DIRECTORY_PATH."/src/views/activationurl.php";
-   $activationResult = 0;
-   if(isset($changeurl)){
-   $changeurl = $_GET['changeurl'];
-$user = new User($_POST);
-$user->activateaccount();
+if(isset($changeurl)){
+$changeurl = $_GET['changeurl'];
+$user = new User($_GET);
+$result = $user->activateAccount($changeurl);
 if(count($result)>0){$activationResult = "<p>Your account is now activated login in below</p>"
-   ."<p><a href='/views/login'>click to login</a>";
+   ."<p><a href='/views/login'>click to login</a></p>";
 
 }
 else{$activationResult = "<p>account does not exist try to register below</p>".
@@ -111,20 +125,24 @@ return $activationResult;
 }
 }
 
-function passwordreset(){
-   include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
-   $resetResult = 0;
-   if(isset($_GET['changeurl'])){
-  $changeurl =$_GET['changeurl'];
-  if(isset($_POST['resetpassword'])){
-   $user =new User($_POST);
-   $user->verifyemail();
-   $user->resetaccountstatus();
-   if($result){$resetResult = "Password Updated";}
-   else{$result = "Password not updated";}
-   return $result;
+function passwordReset(){
+$resetResult = "";
+$newdata = array();
+if(isset($_POST['email']) && isset($_POST['newpassword']) && isset($_POST['confirmpassword'])){
+$newdata= ["email"=>$_POST['email'],"newpassword"=>$_POST['newpassword'],
+"confirmpasword"=>$_POST['confirmpassword']];}
+$user =new User($newdata);
+if(isset($_GET['changeurl'])){
+$changeurl =$_GET['changeurl'];
+if(isset($_POST['resetpassword']) && $newdata['newpassword'] == $newdata['confirmpassword']){
+$result = $user->verifyEmail();
+if($result) $result1 = $user->updatePassword();
+else{$resetResult ="Your Email is not found, require for a new reset";}
+if($result1){$resetResult = "Password Updated Successfully";}
+else{$resetResult = "Password not updated";}
+return $result;
   }
-
-   }
+}
+   include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
 }
 ?>

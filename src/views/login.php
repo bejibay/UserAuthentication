@@ -23,11 +23,11 @@
  <div class="col-12">
 <form action ="login.php" method ="post">
 <h2>Sign In</h2>
-<label for="email" class="userlogin">Email:<?php echo $emailError; ?></label>
+<label for="email" class="userlogin">Email:<?php if(isset($EmailError)) echo $emailError; ?></label>
 <div class ="userlogin">
 <input type="text" class="userlogin" id="email" name="email" placeholder="johndoe@gmail.com">
 <i class ="fa fa-envelope icona"></i>
-<label for="password" class="userlogin">Password:<?php echo $passwordError;?></label>
+<label for="password" class="userlogin">Password:<?php if(isset($passwordError)) echo $passwordError;?></label>
 </div>
 <div class ="userlogin">
 <input type="text" class ="userlogin" id="password" name="password" placeholder="password">

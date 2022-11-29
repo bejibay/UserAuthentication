@@ -23,7 +23,7 @@
  <div class="col-12">
 <form action ="" method ="post">
 <h2>Create Account</h2>
-<p><?php echo $signupError;?></p>
+<p><?php if(isset($signupError)) echo $signupError;?></p>
 <label for="firstname" class="userlogin">Firstname</label>
 <label for="lastname" class="userlogin">Lastname</label>
 <div>

@@ -22,7 +22,8 @@
 <div class="row">
  <div class="col-12">
 <h2>Dashboard</h2>
-<h3><?php echo  "Welcome ".$_SESSION['fname']."".$_SESSION['lname'];?></h3>
+<h3><?php if(isset($_SESSION['firstname']) %% <isset($_SESSION['lastname']))
+{echo  "Welcome ".$_SESSION['firstname']."".$_SESSION['lastname'];}?></h3>
 </div>
 </div>
 <div class="footer">

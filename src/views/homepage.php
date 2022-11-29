@@ -1,5 +1,4 @@
-<?php 
-?>
+<?php ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +13,9 @@
 <div id="container">
 <div class="topnav">
 <div id="mytopnav">
-  <a href="/views/login">Sign in</a>
-  <a href="/views/register">Sign up</a>
-   <a href="/logout">Log Out</a>
+  <a href="login">Sign in</a>
+  <a href="register">Sign up</a>
+   <a href="logout">Log Out</a>
  </div>
 <a href="javascript:void(0);" class="icon" onclick="displayIcon()"><i class="fa fa-bars"></i></a>
 </div>
