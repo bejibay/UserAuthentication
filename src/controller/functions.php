@@ -108,7 +108,7 @@ if($result)sendemailtwo($changeurl);
 }
 
 
-function urlactivation(){
+function urlActivation(){
 if(isset($changeurl)){
 $changeurl = $_GET['changeurl'];
 $user = new User($_GET);

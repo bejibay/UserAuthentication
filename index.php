@@ -32,6 +32,8 @@ case "dashboard":
    dashboard();
   break;
 default:
+urlActivation();
+paswordReset();
  
 }
 ?>
