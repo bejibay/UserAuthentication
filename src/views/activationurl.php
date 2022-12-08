@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Home Page</title>
+<title>Account Activation</title>
 <meta name="description" content="Home Page">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
 <div class="row">
  <div class="col-12">
 <h2>Account Activation</h2>
-<h3><?php echo $activationResult;?></h3>
+<h3><?php if(isset($activationResult)) echo $activationResult;?></h3>
 </div>
 </div>
 <div class="footer">

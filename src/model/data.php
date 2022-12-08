@@ -16,13 +16,14 @@ public $password = '';
 public $confirmpassword ='';
 public $newpassword = '';
 public $created = null;
+public $updated = null;
 public $status = null;
 
 public function __construct($data = array()){
-  if(isset(data['id'])&& is_int(data['id']))$this->id = testdata($data['id']);
-  if(isset(data['firstname'])) $this->firstname = testdata($data['firstnsame']);
-  if(isset(data['lastname'])) $this->lastname = testdata($data['lastname']);
-  if(isset(data['email']) && filter_var($data['email'],FIfLTER_VALIDATE_EMAIL)) $this->email = testdata($data['email']);
+  if(isset($data['id'])&& is_int(data['id']))$this->id = testdata($data['id']);
+  if(isset($data['firstname'])) $this->firstname = testdata($data['firstnsame']);
+  if(isset($data['lastname'])) $this->lastname = testdata($data['lastname']);
+  if(isset($data['email']) && filter_var($data['email'],FIfLTER_VALIDATE_EMAIL))$this->email = testdata($data['email']);
 //set password pattern
 $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?])
 [0-9A-Za-z@#\-_$%^&+=§!\?]{8}$/";
@@ -33,45 +34,54 @@ $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?])
   if(isset($data['newpassword']) &&  preg_match($passwordpattern,$data['newpassword'])) 
   $this->newpassword = testdata(password_verify($data['newpassword']),PASSWORD_BCRYPT);
   if(isset($data['created']))$this->created = $data['created'];
+  if(isset($data['updated']))$this->updated = $data['updated'];
 }
   
- function connect(){
-try{$this->conn = new PDO(DSN, USERNAME, PASSWORD);
+ public function connect(){
+try{$this->conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 return $this->conn;
 }
-catch(PDOException $e){
-die("falied to connect to database" . $e->getMessage());
+catch(Exception $e){
+throw new Exception("failed to connect".$e->getMessage);
 }
 }
 
 
- function verifyEmail(){
+ public function verifyEmail($data=[]){
 $conn = $this->connect();
-$sql = 'SELECT * FROM user where email =:email limit 1'; 
+$result = array();
+$sql = 'SELECT * FROM userdata where email =:email limit 1'; 
+if(isset($data['email'])){
 $stmt =  $conn->prepare($sql);
 $stmt->bindValue(':email', $this->email);
 $stmt->execute();
-$result = $stmt->fetch(PDO::FETCH_ASSOC());
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+}
   if($result)return $result;
  else {return false;}
+
 }
 
- function verifyPassword(){
+ public function verifyPassword($data=[]){
 $conn= $this->connect();
-$result = $this->verifyEmail();
-if(isset($result)){
+if(isset($data['email']) && isset($data['password'])){
+$result = $this->verifyEmail($data['email']);
+if($result){
  if(password_verify($this->password, $result['password'])) return true;
  else{return false;}
  }
  }
+}
 
   
-   function insert($url){
+  public  function insert($statusurl, $data=[]){
   $conn= $this->connect();
-  $changeurl = $url;
-  $sql = 'INSERT INTO user (firstname, lastname, changeurl, email, password, created) VALUES
+  $changeurl = $statusurl;
+  $result =0;
+  $sql = 'INSERT INTO user (firstname, lastname,  password,email, changeurl,created) VALUES
   (:firstname,:lastname, :password, :created, :email,:created, :changeurl)';
+  if(isset($statusurl) && isset($data)){
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
    $stmt->bindValue(':lasttname', $this->lasttname, PDO::PARAM_STR);
@@ -81,46 +91,58 @@ if(isset($result)){
    $stmt->bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
   $stmt->execute();
    $result= $conn->LastInsertId();
-  if($result)return $result;
+  }
+  if($result>0)return $result;
   else{return false;}
   }
   
-   function updatePassword(){
+   public function updatePassword($satusurl,$data= []){
   $conn = $this->connect();
-  $sql = 'UPDATE table SET password = :password  WHERE email = :email';
+  $result =0;
+  $changeurl = $statusurl;
+  $sql = 'UPDATE table SET password = :password  WHERE email = :email AND changeurl=:changeurl';
+  if(isset($changeurl) && isset($data['email']) && isset($data['password'])){
   $stmt = $conn->prepare($sql);
   $stmt-bindValue(':email', $this->email, PDO::PARAM_STR);
   $stmt-bindValue(':password', $this->newpassword, PDO::PARAM_STR);
+  $stmt-bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
   $stmt->execute();
   $result = $stmt->rowCount();
-  if($result)return $result;
+  }
+  if($result>0)return $result;
   else{return false;}
 }
   
-   function activateAccount($url){
+  public  function activateAccount($statusurl){
   $conn = $this->connect();
   $status = 1;
-  $changeurl = $url;
+  $changeurl = $statusurl;
+  $result =0;
   $sql =  'UPDATE table SET status  =:status WHERE changeurl = :changeurl limit 1';
+  if(isset($statusurl)){
   $stmt = $conn->prepare($sql);
   $stmt-bindValue(':status', $status, PDO::PARAM_INT);
   $stmt-bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
   $stmt->execute();
   $result = $stmt->rowCount();
-  if($result)return $result;
+  }
+  if($result>0)return $result;
   else{return false;}
  }
 
-function resetAccountStatus($url){
+public function requestReset($statusurl){
 $conn = $this->connect();
-$changeurl + $url;
+$changeurl + $statusurl;
 $status = 1;
+$result =0;
 $sql =  'UPDATE table SET status =:status WHERE changeurl = :changeurl limit 1';
+if(isset($satusurl)){
 $stmt = $conn->prepare($sql);
 $stmt-bindValue(':status', $status, PDO::PARAM_INT);
 $stmt-bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->rowCount();
+}
 if($result) return $result;
 else {return false;}
 }

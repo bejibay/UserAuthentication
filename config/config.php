@@ -1,5 +1,5 @@
 <?php
-define("DB_DSN", "mysql:host=localhost;dbname=user");
-define("DB_USERNAME", "soowecca");
-define("DB_PASSWORD", "password");
+define("DB_DSN", "mysql:host=localhost;dbname=userauthentication");
+define("DB_USERNAME", "root");
+define("DB_PASSWORD", "");
 ?>

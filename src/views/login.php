@@ -35,7 +35,8 @@
 </div>
 <input type="submit" name="signin" value="Sign In">
 </form>
-<p class ="pbuttom">Don't have an account <a href="/register" class ="sign">Sign up</a>
+<p class ="pbuttom">Don't have an account <a href="/UserAuthentication/register" class ="sign">Sign up</a>
+<p class ="pbuttom">Forget password <a href="/UserAuthentication/requestreset" class ="sign">Request Password Reset</a>
 </div>
 </div>
 <div class="footer">
