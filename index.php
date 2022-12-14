@@ -31,7 +31,7 @@ case "/UserAuthentication/register":
     signup();
    break;
 case "/UserAuthentication/requestreset":
-   requestReset();
+   requestForReset();
   break;
 case "/UserAuthentication/logout":
    logout();
@@ -42,9 +42,6 @@ case "/UserAuthentication/dashboard":
 default:
 otherurls();
 }
-
-
-
 ?>
 
  

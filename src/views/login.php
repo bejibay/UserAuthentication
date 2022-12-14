@@ -21,7 +21,7 @@
 </div>
 <div class="row">
  <div class="col-12">
-<form action ="login.php" method ="post">
+<form action ="" method ="post">
 <h2>Sign In</h2>
 <label for="email" class="userlogin">Email:<?php if(isset($EmailError)) echo $emailError; ?></label>
 <div class ="userlogin">

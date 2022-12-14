@@ -16,7 +16,7 @@
  <div class="col-12">
 <h2>Request Password Reset</h2>
 <h3><?php if(isset($emailSuccess)) echo $emailSuccess;?></h3>
-<form>
+<form action ="" method ="post">
 <input type = "text" name ="email"  placeholder ="Enter Your Email eg john@gmail.com""> 
 <input type = "submit" name ="requestreset"  value ="Request Password Reset"> 
 </form>

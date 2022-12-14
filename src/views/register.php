@@ -27,26 +27,26 @@
 <label for="firstname" class="userlogin">Firstname</label>
 <label for="lastname" class="userlogin">Lastname</label>
 <div>
-<input type="text" class="userlogin" id="firstname" name="firstname" placeholder="John">
+<input type="text" class="userlogin" id="firstname" name="firstname" placeholder=" eg John" required>
 <i class ="fa fa-user icona"></i>
 </div>
 <div>
-<input type="text" class="userlogin" id="lastname" name="email" placeholder="Doe">
+<input type="text" class="userlogin" id="lastname" name="lastname" placeholder="eg Doe" required>
 <i class ="fa fa-user icona"></i>
 </div>
 <label for="email" class="userlogin">Email:<?php echo $emailError;?></label>
 <div class ="userlogin">
-<input type="text" class="userlogin" id="email" name="email" placeholder="johndoe@gmail.com">
+<input type="text" class="userlogin" id="email" name="email" placeholder="eg johndoe@gmail.com" required>
 <i class ="fa fa-envelope icona"></i>
 </div>
 <label for="password" class="userlogin">Password</label>
 <label for="confirmpassword" class="userlogin">Confirmpassword</label>
 <div class ="userlogin">
-<input type="text" class ="userlogin" id="password" name="password" placeholder="password">
+<input type="text" class ="userlogin" id="password" name="password" placeholder="password" required>
 <i class ="fa fa-key icona"></i>
 </div>
 <div class ="userlogin">
-<input type="text" class ="userlogin" id="confirmpassword" name="confirmpassword" placeholder="password">
+<input type="text" class ="userlogin" id="confirmpassword" name="confirmpassword" placeholder="password" required>
 <i class ="fa fa-key icona"></i>
 </div>
 <input type ="radio">Contains at least one Upper case Letter<br>

@@ -1,7 +1,5 @@
 
 <?php
-
-
 function signin(){
 $emailError = "";
 $passwordError ="";
@@ -10,9 +8,12 @@ if(isset($_POST['email']) && isset($_POST['password'])){
 $newdata= ["email"=>$_POST['email'],"password"=>$_POST['password']]; 
 }
 $user  = new User($newdata);
-$result1 = $user->verifyEmail($newdata);
+$email = isset($_POST['email'])?$_POST['email']:"";
+$password = isset($_POST['password'])?$_POST['password']:"";
+$passworddata =["email"=>$_POST['email'],"password"=>$_POST['password']];
+$result1 = $user->verifyEmail($email);
 if(!$result1){$emailError = "Email does not exist";}
-$result2 = $user->verifyPassword($newdata);
+$result2 = $user->verifyPassword($passworddata);
 if($result2 == false){$passwordError = "password is not correct";}
 if(isset($_POST['signin'])){
 if($result1 && $result2 == true){
@@ -36,22 +37,27 @@ $emailError = "";
 $signupError ="";
 $emailSuccess ="";
 $newdata =array();
+$email = array();
 global $statusurl;
 if(isset($_POST['firstname'])  && isset($_POST['lastname']) && isset($_POST['email']) && isset($_POST['password'])
-&& isset($_POST['confirmpassword']) && isset($_POST['created'])){
+&& isset($_POST['confirmpassword'])){
 $newdata= ["firstname"=>$_POST['firstname'],"lastname"=>$_POST['lastname'],"email"=>$_POST['email'],
-"password"=>$_POST['password'],"confirmpassword"=>$_POST['confirmpassword'], "created"=>$_POST['created']]; 
+"password"=>$_POST['password'],"confirmpassword"=>$_POST['confirmpassword']]; 
 }
 $user =  new User($newdata);
-$result1 = $user->verifyemail($newdata);
+$email = isset($_POST['email'])?$_POST['email']:"";
+$result1 = $user->verifyEmail($email);
 if(!$result1){
  if(isset($_POST['signup'])){
    if(isset($_POST['password']) && isset($_POST['confirmpassword']) && $_POST['password']== $_POST['confirmpassword'])
-   {$result2 = $user->insert($statusurl,$newdata);}
-   if($result2){sendemailone($statusurl);$emilSuccess= "Check Your Email to activate Your Account";}
+   {$result2 = $user->insert($statusurl,$newdata);
+   if($result2){activateEmail($statusurl);$emilSuccess= "Check Your Email to activate Your Account";}
  } 
   }
+}
   include WORKING_DIRECTORY_PATH."/src/views/register.php";
+  
+  
 }
 
 function dashboard(){
@@ -64,12 +70,12 @@ else{include WORKING_DIRECTORY_PATH."/src/views/dashboard.php";}
 
 function homepage(){
 include WORKING_DIRECTORY_PATH."/src/views/homepage.php";
-$data = "ilove";
+
 
 }
    
 
-function sendemailone($statusurl){
+function activateEmail($statusurl){
 global $statusurl;
 $url = $statusurl;
 $email = isset($email)?$_POST['email']:"";
@@ -82,7 +88,7 @@ $headers = "From:bejibay@gmail.com";
 mail($to,$subject,$msg,$headers);
 }
 
-function sendemailtwo($statusurl){
+function resetEmail($statusurl){
 global $statusurl;
 $url = $statusurl;
 $email = isset($email)?$_POST['email']:"";
@@ -97,15 +103,15 @@ mail($to,$subject,$msg,$headers);
 
 
 
-function requestReset(){
-$changeurl =md5(rand(0,999).time());
+function requestForReset(){
 $newdata = array();
+global $statusurl;
 if(isset($_POST['email'])){
 $newdata= ["email"=>$_POST['email']]; }
 $user= new User($newdata);
-$result = $user->verifyemail($newdata);
+$result = $user->requestReset($statusurl,$newdata);
 if(isset($_POST['requestreset'])) {
-if($result)sendemailtwo($changeurl);
+if($result)requestEmail($statusurl);
  } 
  include WORKING_DIRECTORY_PATH."/src/views/requestreset.php"; 
 }
@@ -157,7 +163,8 @@ if(isset($_POST['email']) && isset($_POST['newpassword']) && isset($_POST['confi
 $newdata= ["email"=>$_POST['email'],"newpassword"=>$_POST['newpassword'],
 "confirmpasword"=>$_POST['confirmpassword']];}
 $user =new User($newdata);
-$result = $user->verifyEmail($newdata);
+$email = isset($_POST['email'])?$_POST['email']:"";
+$result = $user->verifyEmail($email);
 if(!$result) $emailError = "email does not exist";
 if(isset($path3)){
 $statusurl =$path3;
