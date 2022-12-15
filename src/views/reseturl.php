@@ -48,7 +48,7 @@
 <input type ="radio">Passwords are matching
 <input type="submit" name="signup" value="Sign Up">
 </form>
-<p class ="pbuttom">Already have an account <a href="/login" class ="sign">Sign in</a>
+<p class ="pbuttom">Already have an account <a href="/UserAuthentication/login" class ="sign">Sign in</a>
 </div>
 </div>
 <div class="footer">

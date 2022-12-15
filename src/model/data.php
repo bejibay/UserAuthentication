@@ -102,9 +102,9 @@ if($result){
   $result1 = $this->verifyEmail($data['email']);
   if($result1){
   $stmt = $conn->prepare($sql);
-  $stmt-bindValue(':email', $this->email, PDO::PARAM_STR);
-  $stmt-bindValue(':password', $this->newpassword, PDO::PARAM_STR);
-  $stmt-bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
+  $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+  $stmt->bindValue(':password', $this->newpassword, PDO::PARAM_STR);
+  $stmt->bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
   $stmt->execute();
   $result2 = $stmt->rowCount();
   if($result2)return $result;

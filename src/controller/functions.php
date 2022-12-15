@@ -8,14 +8,14 @@ if(isset($_POST['email']) && isset($_POST['password'])){
 $newdata= ["email"=>$_POST['email'],"password"=>$_POST['password']]; 
 }
 $user  = new User($newdata);
-$email = isset($_POST['email'])?$_POST['email']:"";
-$password = isset($_POST['password'])?$_POST['password']:"";
-$passworddata =["email"=>$_POST['email'],"password"=>$_POST['password']];
+if(isset($_POST['email']))$email = $_POST['email'];
+if(isset($_POST['email']) && isset($_POST['password'])){
+$passworddata =["email"=>$_POST['email'],"password"=>$_POST['password']];}
+if(isset($_POST['signin'])){
 $result1 = $user->verifyEmail($email);
-if(!$result1){$emailError = "Email does not exist";}
+if(!$result1)$emailError = "Email does not exist";
 $result2 = $user->verifyPassword($passworddata);
 if($result2 == false){$passwordError = "password is not correct";}
-if(isset($_POST['signin'])){
 if($result1 && $result2 == true){
 $_SESSION['firstname'] = $result1['firstname']; $_SESION['lastname']= $result1['lastname'];}
 if(isset($_SESSION{'lastname'}) && isset($_SESION['lastname'])){header("location:dashboard");}
@@ -46,14 +46,15 @@ $newdata= ["firstname"=>$_POST['firstname'],"lastname"=>$_POST['lastname'],"emai
 }
 $user =  new User($newdata);
 $email = isset($_POST['email'])?$_POST['email']:"";
+if(isset($_POST['signup'])){
 $result1 = $user->verifyEmail($email);
-if(!$result1){
- if(isset($_POST['signup'])){
-   if(isset($_POST['password']) && isset($_POST['confirmpassword']) && $_POST['password']== $_POST['confirmpassword'])
-   {$result2 = $user->insert($statusurl,$newdata);
+if(isset($_POST['password']) && isset($_POST['confirmpassword']) && $_POST['password']== $_POST['confirmpassword']){
+$result1 = $user->verifyEmail($email);
+if(!$result1){$result2 = $user->insert($statusurl,$newdata);
    if($result2){activateEmail($statusurl);$emilSuccess= "Check Your Email to activate Your Account";}
  } 
   }
+if($result1)$emailError ="Email akready exists" ;
 }
   include WORKING_DIRECTORY_PATH."/src/views/register.php";
   
@@ -109,10 +110,14 @@ global $statusurl;
 if(isset($_POST['email'])){
 $newdata= ["email"=>$_POST['email']]; }
 $user= new User($newdata);
-$result = $user->requestReset($statusurl,$newdata);
 if(isset($_POST['requestreset'])) {
-if($result)requestEmail($statusurl);
- } 
+$result1 = $user->verifyEmail($newdata);
+if($result1){$result2 = $user->requestReset($statusurl,$newdata);
+if($result2)requestEmail($statusurl);
+$emailSuccess= "Check your email to reset your password";
+}
+
+} 
  include WORKING_DIRECTORY_PATH."/src/views/requestreset.php"; 
 }
 
@@ -164,17 +169,17 @@ $newdata= ["email"=>$_POST['email'],"newpassword"=>$_POST['newpassword'],
 "confirmpasword"=>$_POST['confirmpassword']];}
 $user =new User($newdata);
 $email = isset($_POST['email'])?$_POST['email']:"";
-$result = $user->verifyEmail($email);
-if(!$result) $emailError = "email does not exist";
 if(isset($path3)){
 $statusurl =$path3;
 if(isset($_POST['resetpassword']) && $newdata['newpassword'] == $newdata['confirmpassword']){
-if($result) $result1 = $user->updatePassword($statusurl,$newdata);
-else{$resetResult ="Your Email is not found, require for a new reset";}
-if($result1){$resetResult = "Password Updated Successfully";}
-else{$resetResult = "Password not updated";}
-  }
+$result1 = $user->verifyEmail($email);
+if($result1){$result12 = $user->updatePassword($statusurl,$newdata);
+  if($result2)$resetResult = "Password Updated Successfully";
+  else{$resetResult = "Password not updated";}
 }
-   include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
+else{$emailError ="Your Email is not found, require for a new reset";}
+}
+}
+include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
 }
 ?>
