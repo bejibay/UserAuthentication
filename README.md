@@ -14,7 +14,7 @@ when logging in.
 * src/controller/functions for all functions.
 * index.php for routing.
 ## Application
-* the User Authorisation can be applied and enhanced for user authentications
+* the User Authorisation can be applied and enhanced with user authentications
 
 
 

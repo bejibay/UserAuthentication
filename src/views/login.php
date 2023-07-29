@@ -23,20 +23,20 @@
  <div class="col-12">
 <form action ="" method ="post">
 <h2>Sign In</h2>
-<label for="email" class="userlogin">Email:<?php if(isset($EmailError)) echo $emailError; ?></label>
+<label for="email" class="userlogin">Email:<?php echo $emailError; ?></label>
 <div class ="userlogin">
-<input type="text" class="userlogin" id="email" name="email" placeholder="johndoe@gmail.com">
+<input type="text" class="userlogin" id="email" name="email" placeholder="johndoe@gmail.com" required>
 <i class ="fa fa-envelope icona"></i>
-<label for="password" class="userlogin">Password:<?php if(isset($passwordError)) echo $passwordError;?></label>
+<label for="password" class="userlogin">Password:<?php  echo $passwordError;?></label>
 </div>
 <div class ="userlogin">
-<input type="text" class ="userlogin" id="password" name="password" placeholder="password">
+<input type="text" class ="userlogin" id="password" name="password" placeholder="Enter your password" required>
 <i class ="fa fa-key icona"></i>
 </div>
 <input type="submit" name="signin" value="Sign In">
 </form>
-<p class ="pbuttom">Don't have an account <a href="/UserAuthentication/register" class ="sign">Sign up</a>
-<p class ="pbuttom">Forget password <a href="/UserAuthentication/requestreset" class ="sign">Request Password Reset</a>
+<p class ="pbuttom">Don't have an account <a href="register" class ="sign">Sign up</a>
+<p class ="pbuttom">Forget password <a href="requestreset" class ="sign">Request Password Reset</a>
 </div>
 </div>
 <div class="footer">

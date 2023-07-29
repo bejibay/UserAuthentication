@@ -15,8 +15,7 @@
 <div id="mytopnav">
   <a href="login">Sign in</a>
   <a href="register">Sign up</a>
-   <a href="logout">Log Out</a>
- </div>
+  </div>
 <a href="javascript:void(0);" class="icon" onclick="displayIcon()"><i class="fa fa-bars"></i></a>
 </div>
 <div class="row">

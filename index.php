@@ -1,6 +1,5 @@
 <?php
 session_start();
-$statusurl = md5(rand(0,999).time());
 $requesturl ="";
 
 
@@ -18,27 +17,24 @@ require_once  WORKING_DIRECTORY_PATH."/src/model/data.php";
 require_once WORKING_DIRECTORY_PATH."/src/controller/functions.php";
 
 switch ($requesturl){
-   case "/":
-      homepage();
-break;
 case "/UserAuthentication/":
    homepage();
-break;
-case "/UserAuthentication/login":
-   signin();
    break;
 case "/UserAuthentication/register":
-    signup();
+   signup();
+   break;
+case "/UserAuthentication/login":
+    login();
    break;
 case "/UserAuthentication/requestreset":
    requestForReset();
-  break;
+   break;
+case "/UserAuthentication/adminboard":
+      adminboard();
+      break;
 case "/UserAuthentication/logout":
    logout();
-  break;
-case "/UserAuthentication/dashboard":
-   dashboard();
-  break;
+   break;
 default:
 otherurls();
 }

@@ -23,7 +23,7 @@
  <div class="col-12">
 <form action ="" method ="post">
 <h2>Create Account</h2>
-<p><?php if(isset($signupError)) echo $signupError;?></p>
+<p><?php if(isset($emailSuccess)) echo $emailSuccess;?></p>
 <label for="firstname" class="userlogin">Firstname</label>
 <label for="lastname" class="userlogin">Lastname</label>
 <div>
@@ -39,8 +39,8 @@
 <input type="text" class="userlogin" id="email" name="email" placeholder="eg johndoe@gmail.com" required>
 <i class ="fa fa-envelope icona"></i>
 </div>
-<label for="password" class="userlogin">Password</label>
-<label for="confirmpassword" class="userlogin">Confirmpassword</label>
+<label for="password" class="userlogin">Password:</label><?php if(isset($passwordError)) echo $passwordError;?>
+<label for="confirmpassword" class="userlogin">Confirmpassword:</label><?php if(isset($confirmpasswordError)) echo $confirmpasswordError;?>
 <div class ="userlogin">
 <input type="text" class ="userlogin" id="password" name="password" placeholder="password" required>
 <i class ="fa fa-key icona"></i>
@@ -52,10 +52,11 @@
 <input type ="radio">Contains at least one Upper case Letter<br>
 <input type ="radio">Contains at least one special character<br>
 <input type ="radio">Contains at least one number<br>
+<input type ="radio">Mimimum of eight characters<br>
 <input type ="radio">Passwords are matching
 <input type="submit" name="signup" value="Sign Up">
 </form>
-<p class ="pbuttom">Already have an account <a href="/UserAuthentication/login" class ="sign">Sign in</a>
+<p class ="pbuttom">Already have an account <a href="/UserAuthentication/login2" class ="sign">Sign in</a>
 </div>
 </div>
 <div class="footer">

@@ -14,7 +14,7 @@
 <div id="container">
 <div class="topnav">
 <div id="mytopnav">
-  <a href="#">About</a>
+   <a href="#">About</a>
   <a href="#">Contact</a>
  </div>
 <a href="javascript:void(0);" class="icon" onclick="displayIcon()"><i class="fa fa-bars"></i></a>
