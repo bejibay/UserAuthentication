@@ -1,5 +1,6 @@
 <?php 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
 <div id="container">
 <div class="topnav">
 <div id="mytopnav">
@@ -19,26 +21,39 @@
  </div>
 <a href="javascript:void(0);" class="icon" onclick="displayIcon()"><i class="fa fa-bars"></i></a>
 </div>
+
 <div class="row">
- <div class="col-12">
+ <div class="col-6">
 <form action ="" method ="post">
 <h2>Sign In</h2>
-<label for="email" class="userlogin">Email:<?php echo $emailError; ?></label>
-<div class ="userlogin">
-<input type="text" class="userlogin" id="email" name="email" placeholder="johndoe@gmail.com" required>
+
+<div>
+<label for="email">Email:<?php echo $emailError; ?></label>
+<div>
+
+  <div>
+<input type="text" id="email" name="email" placeholder="johndoe@gmail.com" required>
 <i class ="fa fa-envelope icona"></i>
-<label for="password" class="userlogin">Password:<?php  echo $passwordError;?></label>
 </div>
-<div class ="userlogin">
-<input type="text" class ="userlogin" id="password" name="password" placeholder="Enter your password" required>
+
+<div>
+<label for="password">Password:<?php  echo $passwordError;?></label>
+</div>
+
+<div>
+<input type="text"  id="password" name="password" placeholder="Enter your password" required>
 <i class ="fa fa-key icona"></i>
 </div>
-<input type="submit" name="signin" value="Sign In">
+
+<p><input type="submit" name="signin" value="Sign In"></p>
 </form>
-<p class ="pbuttom">Don't have an account <a href="register" class ="sign">Sign up</a>
-<p class ="pbuttom">Forget password <a href="requestreset" class ="sign">Request Password Reset</a>
+
+<p>Don't have an account <a href="register" class ="sign">Sign up</a>
+<p>Forget password <a href="requestreset" class ="sign">Request Password Reset</a>
 </div>
 </div>
+</div>
+
 <div class="footer">
 &copy; copyright  ABC limited"
 </div>

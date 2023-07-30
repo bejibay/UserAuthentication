@@ -3,13 +3,13 @@
 
 function signup(){
 try {
+// declare variables
 $email =$firstname = $lastname = $password = $confirmpassword ="";
 $emailError =$firstnameError = $lastnameError = $passwordError  = $confirmpasswordError ="";
 $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?]).{8,}$/";
-
-
 $emailSuccess ="";
 $newdata =array();
+
 if(isset($_POST['signup'])){
    if(isset($_POST['firstname'])){
    $firstname = $_POST['firstname'];
@@ -66,6 +66,7 @@ include WORKING_DIRECTORY_PATH."/src/views/register.php";
 
 function login(){
 try {
+   // declare variables
 $email = $password =""; 
 $emailError = $passwordError ="";
 $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?]).{8,}$/";
@@ -85,25 +86,21 @@ if(isset($_POST['password']) &&  preg_match($passwordpattern,$_POST['password'])
 
 
 $newdata= ["email"=>$email,"password"=>$password]; 
-
-var_dump($newdata);
 $user  = new User($newdata);
-
 $result = $user->verifyEmail();
-var_dump($result);
 if(is_array($result)){
-   if($user->verifyPassword()){ 
-      $_SESSION['firstname'] = $result['firstname']; $_SESSION['lastname']= $result['lastname'];
+if($user->verifyPassword() === true){ 
+$_SESSION['firstname'] = $result[0]['firstname']; $_SESSION['lastname']= $result[0]['lastname'];     
 } else {$passwordError = "Login credentials incorrect";
 }
 }else {$emailError = "Email does not exist";
 }
 
 
-if(isset($_SESSION['firstname'] ) && isset($_SESSION['lastname'])){
-   header("location:adminboard");
+if(isset($_SESSION['firstname'] ) && isset($_SESSION['lastname'])){ 
+   header ("location:admin");
 }
- else{header("location:login");
+ else { header ("location:login");
 }
 }
 
@@ -122,12 +119,13 @@ function homepage(){
 include WORKING_DIRECTORY_PATH."/src/views/homepage.php";
 }
 
-function adminboard(){
-if(isset($_SESSION['firstname'] ) && isset($_SESSION['lastname'])){
-header("location:adminboard");
-}else{header("location:login");
+function admin(){
+   if(!isset($_SESSION['firstname'] ) && !isset($_SESSION['lastname'])){ 
+      header ("location:login");
+}else {
+   
+   include WORKING_DIRECTORY_PATH."/src/views/admin.php";
 }
-include WORKING_DIRECTORY_PATH."/src/views/adminboard.php";
 }
    
 
@@ -145,7 +143,7 @@ function resetEmail($emailto,$statusurl){
 $to = $emailto;
 $subject = " Reset your password";
 $msg = 'Click on email below to reset password <br>
-<a href="/reseturl/".$statusurl>
+<a href="reseturl/".$statusurl>
 Click to reset</a >';
 $headers = "From:bejibay@gmail.com";
 mail($to,$subject,$msg,$headers);
@@ -154,9 +152,12 @@ mail($to,$subject,$msg,$headers);
 
 
 function requestForReset(){
+try {
+   // declare variables   
 $email = "";
 $emailError = "";
 $newdata = array();
+
 if(isset($_POST['email'])){
 $email  =  $_POST['email'];
 } else {$emailError = "Email field  cannot be empty";
@@ -177,6 +178,8 @@ if(is_int($result2)){
 } else {"request for reset fail try again";
 }
 } 
+} catch (Exception $e){echo $e->getMessage();}
+
 include WORKING_DIRECTORY_PATH."/src/views/requestreset.php";
 } 
  
@@ -184,6 +187,8 @@ include WORKING_DIRECTORY_PATH."/src/views/requestreset.php";
 
 
 function accountActivation(){
+try {
+   // declare variables
 global $path3;
 $result =0;
 $activationResult = "";
@@ -201,6 +206,8 @@ if(is_int($result)){
    "<p><a href='register'>Click to register</a>";
 }
 }
+}catch (Exception $e){echo $e->getMessage();}
+
 include WORKING_DIRECTORY_PATH."/src/views/activationurl.php";
 }
 
@@ -219,6 +226,8 @@ function otherurls(){
    
 
 function resetPassword(){
+  try {
+   // declare variables
 global $path3;
 $email = $newpassword = $confirmpassword ="";
 $emailError = $passwordError = "";
@@ -249,7 +258,9 @@ $result1 = $user->updatePassword($statusurl);
 }else{$resetResult = "Password not updated request for another reset at <a href ='requestreset'>Request Reset<a/>";
 }
 }
-include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
 }
+
+}catch (Exception $e){echo $e->getMessage();}
+include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
 }
 ?>

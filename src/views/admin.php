@@ -1,9 +1,10 @@
 <?php 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Account Activation</title>
+<title>Home Page</title>
 <meta name="description" content="Home Page">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,16 @@
 </head>
 <body>
 <div id="container">
+<div class="topnav">
+<div id="mytopnav">
+<a href="logout">Log Out</a>
+ </div>
+
+</div>
 <div class="row">
  <div class="col-6">
-<h2>Account Activation</h2>
-<h3><?php if(isset($activationResult)) echo $activationResult;?></h3>
+<h2>Dashboard</h2>
+<h3></h3>
 </div>
 </div>
 <div class="footer">

@@ -1,4 +1,5 @@
 <?php
+// sanitise the incoming dara
 function testdata($data){
 $data = trim($data);
 $data = stripslashes($data);
@@ -6,8 +7,11 @@ $data = strip_tags($data);
 return $data;
 }
 
+
 Class User {
-protected $conn = null;
+
+  // Defibe class properties
+ protected $conn = null;
 public $id = null;
 public $firstname = '';
 public $lastname = '';
@@ -19,6 +23,7 @@ public $created = null;
 public $updated = null;
 public $status = null;
 
+// to initialise the properties
 public function __construct($data = array()){
   if(isset($data['id'])&& is_int(data['id']))$this->id = testdata($data['id']);
   if(isset($data['firstname'])) $this->firstname = testdata($data['firstname']);
@@ -37,6 +42,7 @@ $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?]).{8,}$/";
   if(isset($data['updated']))$this->updated = $data['updated'];
 }
   
+//different methods coded out as follows
 public function connect(){
 try{
 $this->conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
@@ -56,14 +62,15 @@ $stmt =  $conn->prepare($sql);
 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetchAll();
-var_dump($result);
 return $result;
 }
 
 public function verifyPassword(){
 $conn = $this->connect();
-$hash = password_hash($this->password,PASSWORD_BCRYPT);
-var_dump($hash);
+$result = $this->verifyEmail();
+if(is_array($result)){
+$hash = $result[0]['password'];
+}
 if(password_verify($this->password, $hash)){
 return true;
 }else {return false; 
@@ -81,7 +88,7 @@ $stmt = $conn->prepare($sql);
 $changeurl = md5(rand(0,999).time());
 $stmt->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
 $stmt->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
-$stmt->bindValue(':password', password_hash($this->password,PASSWORD_BCRYPT), PDO::PARAM_STR);
+$stmt->bindValue(':password', password_hash($this->password,PASSWORD_DEFAULT), PDO::PARAM_STR);
 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
 $stmt->bindValue(':changeurl', $changeurl, PDO::PARAM_STR);
 $stmt->execute();

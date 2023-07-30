@@ -1,4 +1,5 @@
-// style for the pages
+
+/* style for the pages*/
 
 
 * {
@@ -14,9 +15,7 @@ sans-serif;
 overflow: hidden; background-color: black; 
 position: relative;
 }
- .topnav #mytopnav { 
- display: none;
-}
+ 
  .topnav a {
   display: block;
   color:  white;
@@ -24,6 +23,11 @@ position: relative;
   text-decoration: none;
   font-size: 17px;
 }
+
+.topnav #mytopnav { 
+  display: none;
+ }
+
 .topnav a.icon {
   background: black;
   display: block;
@@ -42,49 +46,52 @@ position: relative;
 p,ul,ol,li {
 font-size: 15px;
 }
+
+.icona {
+  background: black;
+  color: white;              
+}
+
 #footer {
 background-color: #787878;
 padding: 15px 15px;
 color: white;
 }
-.col-12{ 
-width: 100%;
-}
-.userlogin {
-  display: -ms-flexbox; /* IE10 */
-  display: flex;
-  width: 100%;
-  padding: 15px;
- }
-.userlogin label{
-width: 50%;
-}
-.register{
-width: 50%
-}
-input[type="subnit"]{
+
+
+[class*= 'col-' ] { width: 100%; padding: 15px;}
+
+
+input[type="submit"]{
 background: #4dd5ff;
 color:  white;
 text-align:  centre;
-magin-top:  30px;
-margin-buttim:20px;  
-}
-.pbuttom{
-text-align: centre;
-}
-.sign{
-color: #edd5ab;
-
+margin-top:  30px;
+margin-bottom:20px;  
 }
 
-.icona{
-color:  white;
-}
 
-@media screen and(min-width:768px){
-.col-12 {
-width: 100%;
-}
+@media screen and (min-width:768px){
+
+  [class*= 'col-' ]{ display: 100%;}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+.topnav #mytopnav { 
+  display: block;
+ }
+
 .topnav a {
            display: block;
            float: left;

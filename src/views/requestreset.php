@@ -26,8 +26,8 @@
 <form action ="" method ="post">
 <input type = "text" name ="email"  placeholder ="Enter Your Email eg john@gmail.com""> 
 <input type = "submit" name ="requestreset"  value ="Request Password Reset"> 
-<p class ="pbuttom">Already have an account <a href="/UserAuthentication/login" class ="sign">Sign in</a>
-<p class ="pbuttom">Don't have an account <a href="/UserAuthentication/register" class ="sign">Sign up</a>
+<p class ="pbuttom">Already have an account <a href="login" class ="sign">Sign in</a>
+<p class ="pbuttom">Don't have an account <a href="register" class ="sign">Sign up</a>
 </form>
 </div>
 </div>

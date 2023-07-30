@@ -2,7 +2,7 @@
 session_start();
 $requesturl ="";
 
-
+//explode the incoming url
 if(isset($_SERVER['REQUEST_URI'])){
 $requesturl = $_SERVER['REQUEST_URI'];
 }
@@ -16,6 +16,7 @@ require_once WORKING_DIRECTORY_PATH."/config/config.php";
 require_once  WORKING_DIRECTORY_PATH."/src/model/data.php";
 require_once WORKING_DIRECTORY_PATH."/src/controller/functions.php";
 
+//swith the various urls for routing
 switch ($requesturl){
 case "/UserAuthentication/":
    homepage();
@@ -30,7 +31,7 @@ case "/UserAuthentication/requestreset":
    requestForReset();
    break;
 case "/UserAuthentication/adminboard":
-      adminboard();
+      admin();
       break;
 case "/UserAuthentication/logout":
    logout();
