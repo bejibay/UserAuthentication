@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Create An Account</title>
-<meta name="description" content="Create An Account">
+<title>Reset Your Password</title>
+<meta name="description" content="Reset Your Password">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="auth.css">
@@ -27,7 +27,7 @@
 <p><?php if(isset($resetResult)) echo $resetResult;?></p>
 
 <div>
-<label for="email" class="userlogin">Email:<?php echo $emailError;?></label>
+<label for="email" class="userlogin">Email:<?php if(isset($emailError)) echo $emailError;?></label>
 </div>
 
 <div>
@@ -53,9 +53,9 @@
 <input type ="radio">Contains at least one number<br>
 <input type ="radio">Passwords are matching
 
-<p><input type="submit" name="signup" value="Sign Up"></p>
+<p><input type="submit" name="resetpassword" value="Reset Password"></p>
 </form>
-<p >Already have an account <a href="login" class ="sign">Sign in</a>
+<p >Already have an account <a href="/UserAuthentication/login" class ="sign">Sign in</a>
 </div>
 
 </div>

@@ -179,7 +179,7 @@ include WORKING_DIRECTORY_PATH."/src/views/requestreset.php";
 } 
  
 
-function accountActivation(){
+function activateUser(){
 try {
    // declare variables
 global $path;
@@ -191,9 +191,9 @@ $statusurl = $path[3];
 $result = $user->activateAccount($statusurl);
 if(is_int($result)){
    $activationResult = "<p>Your account is now activated login in below</p>"
-   ."<p><a href='login'>click to login</a></p>";
+   ."<p><a href='/UserAuthentication/login'>click to login</a></p>";
 }else{$activationResult = "<p>account does not exist try to register below</p>".
-   "<p><a href='register'>Click to register</a>";
+   "<p><a href='/UserAuthentication/register'>Click to register</a>";
 }
 }
 }catch (Exception $e){echo $e->getMessage();}
@@ -207,41 +207,40 @@ include WORKING_DIRECTORY_PATH."/src/views/notfound.php";
 }
    
 
-function resetPassword(){
+function resetUser(){
   try {
    // declare variables
+if(isset($path[3])){
+if(isset($_POST['resetpassword'])){
 global $path;
+$statusurl =$path[3];
 $email = $newpassword = $confirmpassword ="";
 $emailError = $passwordError = "";
 $resetResult = "";
 $newdata = array();
 if(isset($_POST['email'])){
-   $email  = ["email"=>$_POST['email']];
-   } else {$emailError = "Email field  cannot be empty";
+$email  = $_POST['email'];
+} else {$emailError = "Email field  cannot be empty";
 }
 if(isset($_POST['password'])){
-   $email  = ["password"=>$_POST['password']];
+   $password  = $_POST['password'];
    } else {$passwordError = "password field  cannot be empty";
 }
 if(isset($_POST['confirmpassword'])){
-   $email  = ["confirmpassword"=>$_POST['confirmpassword']];
+   $confirmpassword  = $_POST['confirmpassword'];
 } else {$confirmpasswordError = "password confirmation field  cannot be empty";
 }
 
-$newdata= ["newpassword"=>$newpassword,"confirmpasword"=>$confirmpassword];
+if($newpassword == $confirmpassword){$newdata= ["email"=>$email,"newpassword"=>$newpassword,
+"confirmpasword"=>$confirmpassword];}
 $user =new User($newdata);
-
-if(isset($path[3])){
-$statusurl =$path[3];
-if(isset($_POST['resetpassword']) && $newpassword == $confirmpassword){
 $result1 = $user->updatePassword($statusurl);
-  if(is_int($result1)) {
-  $resetResult = "Password Updated Successfully";
+if(is_int($result1)) {
+$resetResult = "Password Updated Successfully";
 }else{$resetResult = "Password not updated request for another reset at <a href ='requestreset'>Request Reset<a/>";
 }
 }
 }
-
 }catch (Exception $e){echo $e->getMessage();}
 include WORKING_DIRECTORY_PATH."/src/views/reseturl.php";
 }

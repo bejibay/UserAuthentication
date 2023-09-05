@@ -16,10 +16,10 @@ if(isset($route['methods']) && in_array($_SERVER['REQUEST_METHOD'],$route['metho
 if(isset($route['function']) && is_callable($route['function'])){
 if($matches){call_user_func($route['function']);
 }
-}
-}
-}
 }if(!$matches){call_user_func('notfound');}
+}
+}
+}
 }
 
 ?>

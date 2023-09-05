@@ -9,7 +9,7 @@ return $data;
 
 Class User {
 
-  // Defibe class properties
+  // Define class properties
  protected $conn = null;
 public $id = null;
 public $firstname = '';
@@ -29,7 +29,8 @@ public function __construct($data = array()){
   if(isset($data['lastname'])) $this->lastname = testdata($data['lastname']);
   
   if(isset($data['email']) && filter_var($data['email'],FILTER_VALIDATE_EMAIL))$this->email = testdata($data['email']);
-//set password pattern
+
+  //set password pattern
 $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?]).{8,}$/";
   if(isset($data['password']) &&  preg_match($passwordpattern,$data['password'])) 
   $this->password = $data['password'];
@@ -41,7 +42,7 @@ $passwordpattern ="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\-_$%^&+=§!\?]).{8,}$/";
   if(isset($data['updated']))$this->updated = $data['updated'];
 }
   
-//different methods coded out as follows
+//connect to database
 public function connect(){
 try{
 $this->conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
@@ -53,7 +54,7 @@ throw new Exception ("failed connection".$e->getMessage());
 }
 } 
 
-
+// verify user email
 public function verifyEmail(){
 $conn = $this->connect();
 $sql = 'SELECT * FROM userdata where email =:email limit 1'; 
@@ -64,11 +65,13 @@ $result = $stmt->fetchAll();
 return $result;
 }
 
+//verify user password
 public function verifyPassword(){
 $conn = $this->connect();
 $result = $this->verifyEmail();
 if(is_array($result)){
 $hash = $result[0]['password'];
+var_dump($hash);
 }
 if(password_verify($this->password, $hash)){
 return true;
@@ -76,7 +79,7 @@ return true;
 }
 }
 
-
+//upon registration insert user data
 public  function insert(){
 $conn = $this->connect();
 $sql = 'INSERT INTO userdata(firstname, lastname, email, password, changeurl) VALUES 
@@ -93,7 +96,7 @@ $result= $conn->LastInsertId();
 return $result;
 }
 
-  
+  //request to reset password
 public function updatePassword($changeurl){
 $conn = $this->connect();
 $sql = 'UPDATE userdata SET password = :password  WHERE email = :email AND changeurl=:changeurl';
@@ -106,6 +109,7 @@ $result = $stmt->rowCount();
 return $result;
 }
  
+//user activate account after successful registration
 public function activateAccount($changeurl){
 $conn = $this->connect();
 $status = 1;
@@ -118,6 +122,7 @@ $result = $stmt->rowCount();
 return $result;
 }
  
+//request to change password
 public function requestReset($changeurl){
 $conn = $this->connect();
 $sql = 'UPDATE userdata SET changeurl =:changeurl WHERE email = :email limit 1';
