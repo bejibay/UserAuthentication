@@ -3,6 +3,7 @@
 
 function signup(){
 try {
+
 // declare variables
 $email =$firstname = $lastname = $password = $confirmpassword ="";
 $emailError =$firstnameError = $lastnameError = $passwordError  = $confirmpasswordError ="";
@@ -44,7 +45,6 @@ $user =  new User($newdata);
 
 $result1 = $user->verifyEmail();
 
-$result2 = null;
 if(is_array($result1)) {
 $emailError = "Email already exists sign in at <a href ='login'>login</a>";  
 }
@@ -95,12 +95,10 @@ $_SESSION['firstname'] = $result[0]['firstname']; $_SESSION['lastname']= $result
 }
 }else {$emailError = "Email does not exist";
 }
-
-
 if(isset($_SESSION['firstname'] ) && isset($_SESSION['lastname'])){ 
-   header ("location:admin");
+header("Location:/UserAuthentication/adminboard");
 }
- else { header ("location:login");
+else { header("Location:/UserAuthentication/login");
 }
 }
 
@@ -120,11 +118,10 @@ include WORKING_DIRECTORY_PATH."/src/views/homepage.php";
 }
 
 function admin(){
-   if(!isset($_SESSION['firstname'] ) && !isset($_SESSION['lastname'])){ 
-      header ("location:login");
+   if(isset($_SESSION['firstname'] ) && isset($_SESSION['lastname'])){
+      include WORKING_DIRECTORY_PATH."/src/views/admin.php";
 }else {
-   
-   include WORKING_DIRECTORY_PATH."/src/views/admin.php";
+   header ("location:/UserAuthentication/login");
 }
 }
    
@@ -148,8 +145,6 @@ Click to reset</a >';
 $headers = "From:bejibay@gmail.com";
 mail($to,$subject,$msg,$headers);
 }
-
-
 
 function requestForReset(){
 try {
@@ -184,20 +179,15 @@ include WORKING_DIRECTORY_PATH."/src/views/requestreset.php";
 } 
  
 
-
-
 function accountActivation(){
 try {
    // declare variables
-global $path3;
+global $path;
 $result =0;
 $activationResult = "";
-$newdata = [];
-$user = new User($newdata);
-
-if(isset($path3)){
-$statusurl = $path3;
-
+$user = new User();
+if(isset($path[3])){
+$statusurl = $path[3];
 $result = $user->activateAccount($statusurl);
 if(is_int($result)){
    $activationResult = "<p>Your account is now activated login in below</p>"
@@ -212,23 +202,15 @@ include WORKING_DIRECTORY_PATH."/src/views/activationurl.php";
 }
 
 
-function otherurls(){
-   global $path2;
-   global $path3;
-   if(isset($path2) && isset($path3) && $path2 =="activation"){
-      accountActivation();
-   }
-   if(isset($path2) && isset($path3) && $path2 =="reseturl"){
-      resetPassword();
-   }
-
+function notfound(){ 
+include WORKING_DIRECTORY_PATH."/src/views/notfound.php";
 }
    
 
 function resetPassword(){
   try {
    // declare variables
-global $path3;
+global $path;
 $email = $newpassword = $confirmpassword ="";
 $emailError = $passwordError = "";
 $resetResult = "";
@@ -249,8 +231,8 @@ if(isset($_POST['confirmpassword'])){
 $newdata= ["newpassword"=>$newpassword,"confirmpasword"=>$confirmpassword];
 $user =new User($newdata);
 
-if(isset($path3)){
-$statusurl =$path3;
+if(isset($path[3])){
+$statusurl =$path[3];
 if(isset($_POST['resetpassword']) && $newpassword == $confirmpassword){
 $result1 = $user->updatePassword($statusurl);
   if(is_int($result1)) {

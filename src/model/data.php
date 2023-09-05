@@ -7,7 +7,6 @@ $data = strip_tags($data);
 return $data;
 }
 
-
 Class User {
 
   // Defibe class properties
@@ -78,8 +77,6 @@ return true;
 }
 
 
-
-
 public  function insert(){
 $conn = $this->connect();
 $sql = 'INSERT INTO userdata(firstname, lastname, email, password, changeurl) VALUES 
@@ -108,9 +105,7 @@ $stmt->execute();
 $result = $stmt->rowCount();
 return $result;
 }
-
-
-  
+ 
 public function activateAccount($changeurl){
 $conn = $this->connect();
 $status = 1;
@@ -123,7 +118,6 @@ $result = $stmt->rowCount();
 return $result;
 }
  
-
 public function requestReset($changeurl){
 $conn = $this->connect();
 $sql = 'UPDATE userdata SET changeurl =:changeurl WHERE email = :email limit 1';
